@@ -1,0 +1,33 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: localhost:8848
+        file-extension: yaml
+        group: dev
+        username: nacos
+        password: nacos
+  profiles:
+    active: prod
+
+# dev环境配置
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+    import:
+      # 拉取nacos配置：傳入dataId
+      - nacos:person?group=dev
+      - classpath:dog.yaml
+      - optional:classpath:cat.yaml
+
+# prod环境配置
+---
+spring:
+  config:
+    import:
+      # 拉取nacos配置：傳入dataId
+      - nacos:person?group=prod
+    activate:
+      on-profile: prod
